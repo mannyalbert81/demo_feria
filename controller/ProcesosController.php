@@ -448,6 +448,100 @@ class ProcesosController extends ControladorBase{
         
         
     }
+
+    public function generapdf1(){
+        
+        $respuesta = new stdClass();
+        $nivel2 = new Nivel2Model();
+        $clientes = new ClientesModel();
+        
+        $documento = new DocumentoModel();
+        
+        $_categoria = (isset($_REQUEST['categoriaId']))?$_REQUEST['categoriaId']:'';
+        $_subcategoria = (isset($_REQUEST['subcategoriaId']))?$_REQUEST['subcategoriaId']:'';        
+        $_numero_credito = (isset($_REQUEST['numero_credito']))?$_REQUEST['numero_credito']:'';
+        $_identificacion_cliente = (isset($_REQUEST['identificacion_cliente']))?$_REQUEST['identificacion_cliente']:'';
+        $_tipo_credito = (isset($_REQUEST['tipo_credito']))?$_REQUEST['tipo_credito']:'';
+        $_nombre_cliente = (isset($_REQUEST['nombre_cliente']))?$_REQUEST['nombre_cliente']:'';
+        $_numero_carton = (isset($_REQUEST['numero_carton']))?$_REQUEST['numero_carton']:'';
+        $_fecha_documento = (isset($_REQUEST['fecha_documento']))?$_REQUEST['fecha_documento']:'';
+        
+        //print_r($_POST); die();
+        
+        if($_categoria!='' && $_subcategoria!='' && $_numero_credito!='' && $_identificacion_cliente!='' && $_tipo_credito!='' )
+        {
+            
+            require dirname(__FILE__).'\..\view\fpdf\fpdf.php';
+            //--include dirname(__FILE__).'\barcode.php';
+            require dirname(__FILE__)."\phpqrcode\qrlib.php";
+            
+            
+            $pdf = new FPDF();
+                   
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 20);
+                        
+            //para ubicaciones
+            
+            $y = $pdf->GetY();
+            //$x = $pdf->GetX();
+            $mid_x = $pdf->GetPageWidth() / 2;
+            $octavo_y = $pdf->GetPageHeight()/3;
+                        
+            //Declaramos una carpeta temporal para guardar la imagenes generadas
+            $dir = dirname(__FILE__).'\..\view\images\qrcode\\';
+                        
+            //Si no existe la carpeta la creamos
+            if (!file_exists($dir))
+                mkdir($dir);
+                            
+            //Declaramos la ruta y nombre del archivo a generar
+            
+            $filename = $dir.'.png';
+                            
+            //para el code
+            
+            $code= $_numero_credito.','.$_identificacion_cliente.','.$_tipo_credito.','.$_nombre_cliente.','.$_numero_carton.','.$_fecha_documento;
+                            
+            //Parametros de Condiguracion
+            
+            $tamanio = 10; //Tamanio de Pixel
+            $level = 'L'; //Precision Baja
+            $framSize = 3; //Tamanio en blanco
+            $contenido = $code; //Texto                          
+                            
+                            
+            //Enviamos los parametros a la Funciï¿½n para generar cï¿½digo QR
+            QRcode::png($contenido, $filename, $level, $tamanio, $framSize);
+            
+            //--$ubicacion =   dirname(__FILE__).'\..\view\images\barcode'.'\\'.$nombreimagen.'.png';
+            //--barcode($ubicacion, $code, 20, 'horizontal', 'code128', true);
+            //array('text' => $code, 'drawText' => false)
+            $pdf->SetFont('Arial','',15);
+            $pdf->SetXY(20, 40);
+            $pdf->Cell(0,20, $pdf->Image($filename, $mid_x-20, $pdf->GetY(),40,40,'PNG'),0);
+            //$pdf->Image($ubicacion,80,$y,100,0,'PNG');
+            //$y = $y+15;
+            
+            $texto = utf8_encode("INFORMACIÓN EXPEDIENTE");
+            
+            $pdf->SetFont('Arial','',50);
+            //$y = $pdf->GetY();
+            $pdf->SetXY(20, $y+90);
+            $pdf->MultiCell(0,30, utf8_decode($texto) ,1,'C');
+            
+            $pdf->Output();
+            
+            
+          
+            
+        }else{
+            $this->redirect("Procesos","indexpdf");
+        }
+        
+        
+    }
+    
     
     public function vercode(){
         
@@ -578,6 +672,10 @@ class ProcesosController extends ControladorBase{
         echo json_encode($respuesta);
     }
     
+    public function TraeTipoDocumento(){
+        
+        
+    }
    
 }
 ?>

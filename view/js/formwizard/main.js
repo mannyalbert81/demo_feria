@@ -32,10 +32,13 @@ $(function(){
         			return false;
         		}
         	}        	
-        	if(newIndex===3){        		
-        		if($("#id_nivel1").val()==0){        			
+        	if(newIndex===3){ 
+        		if($("#tipo_credito").val()==0){        			
         			return false;
         		}
+        		/*if($("#id_nivel1").val()==0){        			
+        			return false;
+        		}*/
         	}
         	        	
             if ( newIndex >= 1 ) {

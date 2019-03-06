@@ -51,7 +51,7 @@
                  
                  <!-- Custom form wizard-->
                 <script src="view/js/formwizard/jquery.steps.js"></script>
-            	<script src="view/js/formwizard/main.js?1.1"></script>
+            	<script src="view/js/formwizard/main.js?1.3"></script>
                  
                  
                  
@@ -393,13 +393,13 @@ function traeSubCategoria(categoriaId=1){
 		data:{id_categorias:categoriaId}
 	}).done(function(respuesta){
 
-		console.log(respuesta)		
+		//console.log(respuesta)		
 		
 		if(respuesta.mensaje == '1'){
 			
 		
 		var $boton = '<div class="col-lg-4">'+
-					'<button type="button" id="sub_{id_subcategorias}" onclick="selecionasubcategoria(event, this)" value="{nombre_subcategoria}" class="clscategoria btn btn-default btn-sm">'+
+					'<button type="button" id="sub_{id_subcategorias}" onclick="selecionasubcategoria(event, this)" value="{nombre_subcategoria}" class="clssubcategoria btn btn-default btn-sm">'+
 					'<span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;{texto}'+
 					'</button></div></div>';
 		var $bn='';
@@ -428,13 +428,13 @@ function selecionasubcategoria(e, v){
 
 	$( "#respuestasubcategoria" ).remove();
 
-	var subcategoria = v.id
+	var subcategoria = v.id;
 
-	subcategoria = subcategoria.replace('sub_','')
+	subcategoria = subcategoria.replace('sub_','');
 		
-	$("#subcategoriaId").val(subcategoria)
+	$("#subcategoriaId").val(subcategoria);	
 
-	$("#sub_"+v.id).after('<span id="respuestasubcategoria" class="glyphicon glyphicon-ok text-success"></span>');
+	$("#"+v.id).after('<span id="respuestasubcategoria" class="glyphicon glyphicon-ok text-success"></span>');
 }
 
 
@@ -493,7 +493,7 @@ function selecionasubcategoria(e, v){
                     <br>
                     <br>
                      <div class="wrapper">
-                        <form action="index.php?controller=Procesos&action=generapdf" method="post" enctype="multipart/form-data" id="wizard">
+                        <form action="index.php?controller=Procesos&action=generapdf1" method="post" enctype="multipart/form-data" id="wizard">
                     		<!-- SECTION 1 -->
                             <h4></h4>
                             <section>
@@ -501,7 +501,7 @@ function selecionasubcategoria(e, v){
                             	<div class="row" id="dvPaso1">
             								
             					</div> 
-            					<input type="hidden" value="" id="categoriaId" />
+            					<input type="hidden" value="" id="categoriaId" name="categoriaId" />
             					<br>
             					<br>
                             </section>
@@ -516,7 +516,7 @@ function selecionasubcategoria(e, v){
 									
 								</div>								
                             	                				
-                				<input type="hidden" id="subcategoriaId"  value="0" />                            	
+                				<input type="hidden" id="subcategoriaId" name="subcategoriaId" value="0" />                            	
                             	
                             </section>
             
@@ -541,9 +541,14 @@ function selecionasubcategoria(e, v){
                                  	
                                  	<div class="col-xs-12 col-md-4 col-lg-4">
                         		   <div class="form-group">
-                                      <label for="id_estado" class="control-label">Tipo Credito:</label>
+                                      <label for="tipo_credito" class="control-label">Tipo Documento:</label>
                                       <select name="tipo_credito" id="tipo_credito"  class="form-control" >
                                       	<option value="0" selected="selected">--Seleccione--</option>
+                                      	<option value="PAGARES" >PAGARES</option>
+                                      	<option value="CREDITO" >CREDITO</option>
+                                      	<option value="TRANFERENCIAS" >TRANFERENCIAS</option>
+                                      	<option value="RECAUDACIONES" >RECAUDACIONES</option>
+                                      	<option value="COMPROBANTES" >COMPROBANTES</option>
     								   </select>
                                     </div>
                                   </div>
@@ -560,13 +565,13 @@ function selecionasubcategoria(e, v){
                                  	<div class="col-xs-12 col-md-4 col-lg-4 ">
                                     	<div class="form-group">
                                         	<label for="numero_carton" class="control-label">Numero Carton:</label>
-                                            <input type="text" class="form-control" id="numero_carton" name="numero_carton" value=""  placeholder="# credito" >
+                                            <input type="text" class="form-control" id="numero_carton" name="numero_carton" value=""  placeholder="# carton" >
                                          </div>
                                  	</div>
                                  	<div class="col-xs-12 col-md-4 col-lg-4 ">
                                     	<div class="form-group">
                                         	<label for="fecha_documento" class="control-label">Fecha:</label>
-                                            <input type="text" class="form-control" id="fecha_documento" name="fecha_documento" value=""  placeholder="# credito" >
+                                            <input type="date" class="form-control" id="fecha_documento" name="fecha_documento" value=""  placeholder="# fecha" >
                                          </div>
                                  	</div>
                                  	
@@ -580,41 +585,13 @@ function selecionasubcategoria(e, v){
                             <!-- SECTION 4 -->
                             <h4></h4>
                             <section>
-                                <h3>Nivel 0</h3>
+                                <h3>GENERAR</h3>
                                 
                                 <div class="row">
-                                	<div class="col-lg-6 col-md-6">
-                                		<ul class="list-group">
-                                          <li class="list-group-item list-group-item-info">- INFORMACION BASICA</li>
-                                          <li class="list-group-item list-group-item-info">- SELECCIONE INTERVINIENTE</li>
-                                          <li class="list-group-item list-group-item-info">- NÚMERO IDENTIFICACIÓN</li>
-                                          <li class="list-group-item list-group-item-info">- NÚMERO PROPUESTA</li>
-                                        </ul>
-                                		
-                                	</div>
-                                	<div class="col-lg-6 col-md-6">
-                                		<ul class="list-group">                                         
-                                          <li class="list-group-item list-group-item-info">- INFORMACION FINANCIERA</li>
-                                          <li class="list-group-item list-group-item-info">- INFORMACI LEGAL</li>
-                                          <li class="list-group-item list-group-item-info">- INSTRUMENTACI DEL PRODUCTO</li>
-                                          <li class="list-group-item list-group-item-info">- DESEMBOLSOS</li>
-                                        </ul>
-                                		
-                                	</div>
+                                	
+                                	
                                 </div>
                                 
-                                <!-- <div class="row">
-                                	<div class="col-lg-3 col-md-3">
-                						 <button class="buscanivel0"  type="button" value="informacion basica" class="btn  btn-block btn-default">
-                                          <span class="glyphicon glyphicon-folder-open"></span> Informacion Basica
-                                        </button>
-                					</div>
-                					<div class="col-lg-3 col-md-3">
-                						 <button class="buscanivel0"  type="button" value="seleccione interviniente" class="btn  btn-block btn-default">
-                                          <span class="glyphicon glyphicon-folder-open"></span> Seleccione Interviniente
-                                        </button>
-                					</div>
-                                </div> -->
                                 
                                 <input type="hidden" id="id_nivel0" name="id_nivel0" value="0" />
                             </section>
@@ -653,10 +630,37 @@ function selecionasubcategoria(e, v){
 
  <script type="text/javascript">
  $(document).ready(function(){
-	 $('#cedula_clientes').inputmask('9999999999999',{"placeholder": ""});
-	 $('#num_propuesta').inputmask('9999999999',{"placeholder": ""});
+	 
+	 $('#identificacion_cliente').inputmask('9999999999999',{"placeholder": ""});
+	 
+	 $('#numero_carton').inputmask('9999999999',{"placeholder": ""});
+
+	 $('#numero_credito').inputmask('9999999999',{"placeholder": ""});
 	 
  });
+
+ function tipodocumento(){
+
+	 $.ajax({
+			url:'index.php?controller=Procesos&action=TraeTipoDocumento',
+			type:'POST',
+			dataType:'json',
+			data:null
+		}).done(function(respuesta){
+
+			$("#tipo_documento").empty()
+        	$("#tipo_documento").append("<option value= \"0\" >--Seleccione--</option>");
+        	$.each(respuesta, function(index, value) {
+ 		 		$("#tipo_documento").append("<option value= " +value.id_grupos +" >" + value.nombre_grupos  + "</option>");	
+             });   
+			
+		}).fail( function( xhr , status, error ){
+			 var err=xhr.responseText
+			console.log(err)
+		});
+	  
+	}
+	 
 
  </script>
  
