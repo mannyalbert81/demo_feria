@@ -20,13 +20,15 @@ $(function(){
         		}
         	}*/
         	if(newIndex===1){        		
-        		if($("#cedula_clientes").val()==""){        			
+        		if($("#categoriaId").val()==""){        			
         			return false;
+        		}else{
+        			traeSubCategoria($("#categoriaId").val())
         		}
         	}
         	
         	if(newIndex===2){        		
-        		if($("#id_nivel2").val()==0){        			
+        		if($("#subcategoriaId").val()==0){        			
         			return false;
         		}
         	}        	

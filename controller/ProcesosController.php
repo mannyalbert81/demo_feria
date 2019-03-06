@@ -532,6 +532,52 @@ class ProcesosController extends ControladorBase{
        
     }
     
+    public function TraeCategorias(){
+        
+        $categorias = new CategoriasModel();
+        $where = '1=1';
+        $resultCategorias = $categorias->getCondiciones('*','categorias','1=1','nombre_categorias');
+        
+        $respuesta = array();
+        
+        if(!empty($resultCategorias) && count($resultCategorias)>0){
+            
+            $respuesta['mensaje']='1';
+            
+            $respuesta['detalle'] = $resultCategorias;
+        }
+        
+        echo json_encode($respuesta);
+    }
+    
+    public function TraeSubCategorias(){
+        
+        $categorias = new CategoriasModel();
+        
+        $respuesta = array();
+        
+        if(isset($_POST['id_categorias'])){
+            
+            $id_categoria = $_POST['id_categorias'];
+            
+            $where = 'id_categorias ='.$id_categoria;
+            $resultCategorias = $categorias->getCondiciones('*','subcategorias',$where,'nombre_subcategorias');
+            
+            
+            
+            if(!empty($resultCategorias) && count($resultCategorias)>0){
+                
+                $respuesta['mensaje']='1';
+                
+                $respuesta['detalle'] = $resultCategorias;
+            }
+            
+        }
+        
+        
+        echo json_encode($respuesta);
+    }
+    
    
 }
 ?>

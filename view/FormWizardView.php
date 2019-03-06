@@ -51,7 +51,7 @@
                  
                  <!-- Custom form wizard-->
                 <script src="view/js/formwizard/jquery.steps.js"></script>
-            	<script src="view/js/formwizard/main.js"></script>
+            	<script src="view/js/formwizard/main.js?1.1"></script>
                  
                  
                  
@@ -63,6 +63,8 @@
 
 	   $(document).ready( function (){
 		   pone_espera();
+
+			traeCategoria();
 		  
 		});
 
@@ -86,10 +88,14 @@
         
 	   }
 
+	  
+
 </script>
 
 <script type="text/javascript">
 $(document).ready(function(){
+
+	
 var cedula_clientes = $("#cedula_clientes").val();
 	
 	$( "#cedula_clientes" ).autocomplete({
@@ -307,8 +313,131 @@ $(".buscanivel0").click(function(){
     		});
 		}	
 	});
+
+   
 	
 });
+
+
+
+function traeCategoria(){
+
+	$.ajax({
+		url:'index.php?controller=Procesos&action=TraeCategorias',
+		type:'POST',
+		dataType:'json',
+		data:null
+	}).done(function(respuesta){
+
+		console.log(respuesta)		
+		
+		if(respuesta.mensaje == '1'){
+			/*<div class="row">
+			<div class="col-lg-4">
+				<button type="button" value="corporativo" class="buscanivel2 btn btn-default btn-lg">
+					<span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;CORPORATIVO
+				</button>
+			</div>
+		</div>*/
+		var $divprincipal = $('#dvPaso1')
+		
+		var $boton = '<div class="col-lg-6">'+
+					'<button type="button" id="{id_categoria}" onclick="selecionacategoria(event, this)" value="{nombre_categoria}" class="clscategoria btn btn-default ">'+
+					'<span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;{texto}'+
+					'</button></div></div>';
+		var $bn='';
+		
+    		for( i = 0; i < respuesta.detalle.length; i++) {
+    
+    			$bn = $boton.replace('{nombre_categoria}',respuesta.detalle[i].nombre_categorias)
+    			
+    			$bn = $bn.replace('{texto}',respuesta.detalle[i].nombre_categorias)
+    			
+    			$bn = $bn.replace('{id_categoria}',respuesta.detalle[i].id_categorias)			
+    			
+    			
+    			$divprincipal.append($bn);
+            }
+		}
+		
+	}).fail( function( xhr , status, error ){
+		 var err=xhr.responseText
+		console.log(err)
+	});
+	
+}
+
+
+
+
+function selecionacategoria(e, v){
+
+	$( "#respuestacategoria" ).remove();
+
+	$("#"+v.id).after('<span id="respuestacategoria" class="glyphicon glyphicon-ok text-success"></span>');
+		
+	$("#categoriaId").val(v.id)
+}
+
+
+function traeSubCategoria(categoriaId=1){
+
+	var $divprincipal = $('#dvPaso2')
+	
+	 $divprincipal.html('');
+	
+	$.ajax({
+		url:'index.php?controller=Procesos&action=TraeSubCategorias',
+		type:'POST',
+		dataType:'json',
+		data:{id_categorias:categoriaId}
+	}).done(function(respuesta){
+
+		console.log(respuesta)		
+		
+		if(respuesta.mensaje == '1'){
+			
+		
+		var $boton = '<div class="col-lg-4">'+
+					'<button type="button" id="sub_{id_subcategorias}" onclick="selecionasubcategoria(event, this)" value="{nombre_subcategoria}" class="clscategoria btn btn-default btn-sm">'+
+					'<span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;{texto}'+
+					'</button></div></div>';
+		var $bn='';
+		
+    		for( i = 0; i < respuesta.detalle.length; i++) {
+    
+    			$bn = $boton.replace('{nombre_subcategoria}',respuesta.detalle[i].nombre_subcategorias)
+    			
+    			$bn = $bn.replace('{texto}',respuesta.detalle[i].nombre_subcategorias)
+    			
+    			$bn = $bn.replace('{id_subcategorias}',respuesta.detalle[i].id_subcategorias)			
+    			
+    			
+    			$divprincipal.append($bn);
+            }
+		}
+		
+	}).fail( function( xhr , status, error ){
+		 var err=xhr.responseText
+		console.log(err)
+	});
+	
+}
+
+function selecionasubcategoria(e, v){
+
+	$( "#respuestasubcategoria" ).remove();
+
+	var subcategoria = v.id
+
+	subcategoria = subcategoria.replace('sub_','')
+		
+	$("#subcategoriaId").val(subcategoria)
+
+	$("#sub_"+v.id).after('<span id="respuestasubcategoria" class="glyphicon glyphicon-ok text-success"></span>');
+}
+
+
 </script>
 
 			        
@@ -368,40 +497,11 @@ $(".buscanivel0").click(function(){
                     		<!-- SECTION 1 -->
                             <h4></h4>
                             <section>
-                                <h3>Validación Información</h3>
-                            	<div class="row">
-            						<div class="col-xs-12 col-md-6 col-lg-6 ">
-            							<div class="form-group">
-            								<label for="cedula_clientes" class="control-label">Cedula:</label>
-            								<div class="input-group margin">
-            									<input type="text" class="form-control" id="cedula_clientes" name="cedula_clientes" value=""  placeholder="cedula.." >
-            									<input type="hidden" class="form-control" id="id_clientes" name="id_clientes" value="0" >
-            									<div id="mensaje_cedula_clientes" class="errores"></div>
-            										<span class="input-group-btn">
-            										<button type="button" id="btn_buscar" class="btn btn-info btn-flat">Buscar</button>
-            										</span>
-            								</div>
-											<input type="hidden" class="form-control" id="tipo_cliente" name="tipo_cliente" value="0" >
-            															
-            							</div>
-            						</div> 
-									<div class="col-lg-6 col-xs-12 col-md-6">
-										<div class="form-group">
-											<label for="num_propuesta" class="control-label">Numero Propuesta:</label>
-											<input type="text" class="form-control" id="num_propuesta" name="num_propuesta" value="" placeholder="numero..">
-										</div>
-                    		    	</div>
-									<div class="col-lg-6 col-xs-12 col-md-6">
-										<div class="form-group">
-											<label for="num_propuesta" class="control-label">Indice :</label>
-											<select id="tipo_solicitud" name="tipo_solicitud" class="form-control">
-												<option value="titular/solicitante">TITULAR/SOLICITANTE</option>
-												<option value="garante">GARANTE</option>
-											</select>
-										</div>
-                    		    	</div>
-									     				
+                                <h3>CATEGORIA</h3>
+                            	<div class="row" id="dvPaso1">
+            								
             					</div> 
+            					<input type="hidden" value="" id="categoriaId" />
             					<br>
             					<br>
                             </section>
@@ -409,86 +509,71 @@ $(".buscanivel0").click(function(){
             				<!-- SECTION 2 -->
                             <h4></h4>
                             <section>
-								<h3>Nivel2</h3>
-								
+                            
+								<h3>SUBCATEGORIA</h3>								
 
-								<div class="row">
-									<div class="col-lg-4">
-										<button type="button" value="corporativo" class="buscanivel2 btn btn-default btn-lg">
-											<span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;CORPORATIVO
-										</button>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-4">
-										<button type="button" value="personal" class="buscanivel2 btn btn-default btn-lg">
-											<span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;PERSONAL
-										</button>
-									</div>
-								</div>
+								<div class="row" id="dvPaso2">
+									
+								</div>								
                             	                				
-                				<input type="hidden" id="id_nivel2" name="id_nivel2" value="0" />
-                            	
+                				<input type="hidden" id="subcategoriaId"  value="0" />                            	
                             	
                             </section>
             
                             <!-- SECTION 3 -->
                             <h4></h4>
                             <section>
-                                <h3 di="titulonivel1" style="margin-bottom: 16px;">NIVEL 1</h3>
-                                <div  >
+                                <h3 di="titulonivel1" style="margin-bottom: 16px;">DATOS INFORMATIVOS</h3>
+                                
                                 <div class="row">
-                					<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="analisis" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;ANALISIS
-                                        </button>
-                					</div>
-                					<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="garantia" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;GARANTIA
-                                        </button>
-                					</div>
-                					<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="seguros" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;SEGUROS
-                                        </button>
-                					</div>
-                					
-								</div>
-								<div class="row">
-									<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="desembolso" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;DESEMBOLSO
-                                        </button>
-									</div>
-									<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default"  type="button" value="avaluos" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;AVALUOS
-                                        </button>
-                					</div>
-                					<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="codeudor" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;CODEUDOR
-                                        </button>
-                					</div>
-								</div>
-                				<div class="row">
-                					
-                					<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="garante" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;GARANTE
-                                        </button>
-                					</div>
-                					<div class="col-lg-4 col-md-4">
-                						 <button class="buscanivel1 btn btn-default "  type="button" value="actualizaciones" >
-                                          <span class="glyphicon glyphicon-folder-open"></span> &nbsp;&nbsp;&nbsp;ACTUALIZACIONES
-                                        </button>
-                					</div>
-                				</div>
-                				</div>
+                                	<div class="col-xs-6 col-md-4 col-lg-4 ">
+                                    	<div class="form-group">
+                                        	<label for="numero_credito" class="control-label">Numero Credito:</label>
+                                            <input type="text" class="form-control" id="numero_credito" name="numero_credito" value=""  placeholder="# credito" >
+                                         </div>
+                                 	</div>
+                                 	<div class="col-xs-6 col-md-4 col-lg-4 ">
+                                    	<div class="form-group">
+                                        	<label for="identificacion_cliente" class="control-label">RUC/CC:</label>
+                                            <input type="text" class="form-control" id="identificacion_cliente" name="identificacion_cliente" value=""  placeholder="ci-ruc.." >
+                                         </div>
+                                 	</div>
+                                 	
+                                 	<div class="col-xs-12 col-md-4 col-lg-4">
+                        		   <div class="form-group">
+                                      <label for="id_estado" class="control-label">Tipo Credito:</label>
+                                      <select name="tipo_credito" id="tipo_credito"  class="form-control" >
+                                      	<option value="0" selected="selected">--Seleccione--</option>
+    								   </select>
+                                    </div>
+                                  </div>
+                                  
+                                 	
+                                 </div>
+                                 <div class="row">
+                                 	<div class="col-xs-12 col-md-4 col-lg-4">
+                                    	<div class="form-group">
+                                        	<label for="nombre_cliente" class="control-label">Nombre Cliente:</label>
+                                            <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" value=""  placeholder="Nombre" >
+                                         </div>
+                                 	</div>
+                                 	<div class="col-xs-12 col-md-4 col-lg-4 ">
+                                    	<div class="form-group">
+                                        	<label for="numero_carton" class="control-label">Numero Carton:</label>
+                                            <input type="text" class="form-control" id="numero_carton" name="numero_carton" value=""  placeholder="# credito" >
+                                         </div>
+                                 	</div>
+                                 	<div class="col-xs-12 col-md-4 col-lg-4 ">
+                                    	<div class="form-group">
+                                        	<label for="fecha_documento" class="control-label">Fecha:</label>
+                                            <input type="text" class="form-control" id="fecha_documento" name="fecha_documento" value=""  placeholder="# credito" >
+                                         </div>
+                                 	</div>
+                                 	
+                                 	
+                                </div>
+                                         				
                 				
-                				                				
-                				<input type="hidden" id="id_nivel1" name="id_nivel1" value="0" />
                                 
                             </section>
             
@@ -500,7 +585,7 @@ $(".buscanivel0").click(function(){
                                 <div class="row">
                                 	<div class="col-lg-6 col-md-6">
                                 		<ul class="list-group">
-                                          <li class="list-group-item list-group-item-info">- INFORMACIÓN BÁSICA</li>
+                                          <li class="list-group-item list-group-item-info">- INFORMACION BASICA</li>
                                           <li class="list-group-item list-group-item-info">- SELECCIONE INTERVINIENTE</li>
                                           <li class="list-group-item list-group-item-info">- NÚMERO IDENTIFICACIÓN</li>
                                           <li class="list-group-item list-group-item-info">- NÚMERO PROPUESTA</li>
@@ -509,9 +594,9 @@ $(".buscanivel0").click(function(){
                                 	</div>
                                 	<div class="col-lg-6 col-md-6">
                                 		<ul class="list-group">                                         
-                                          <li class="list-group-item list-group-item-info">- INFORMACIÓN FINANCIERA</li>
-                                          <li class="list-group-item list-group-item-info">- INFORMACIÓN LEGAL</li>
-                                          <li class="list-group-item list-group-item-info">- INSTRUMENTACIÓN DEL PRODUCTO</li>
+                                          <li class="list-group-item list-group-item-info">- INFORMACION FINANCIERA</li>
+                                          <li class="list-group-item list-group-item-info">- INFORMACI LEGAL</li>
+                                          <li class="list-group-item list-group-item-info">- INSTRUMENTACI DEL PRODUCTO</li>
                                           <li class="list-group-item list-group-item-info">- DESEMBOLSOS</li>
                                         </ul>
                                 		
