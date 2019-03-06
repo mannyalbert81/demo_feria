@@ -1,14 +1,39 @@
 <!DOCTYPE HTML>
 <html lang="es">
-     <head>
-     
-<?php //require_once 'config/global.php';?> 
-<?php //echo json_encode($resultCli);?>
-     
+      <head>
         <meta charset="utf-8"/>
-        <title>Búsqueda de Documentos - aDocument 2015</title>
-   
-  		
+        <title>Busqueda</title>
+
+		
+		  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="view/css/estilos.css">
+		<link rel="stylesheet" href="view/vendors/table-sorter/themes/blue/style.css">
+	
+	
+	
+		    <!-- Bootstrap -->
+    		<link href="view/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    		<!-- Font Awesome -->
+		    <link href="view/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		    <!-- NProgress -->
+		    <link href="view/vendors/nprogress/nprogress.css" rel="stylesheet">
+		    
+		   
+		    <!-- Custom Theme Style -->
+		    <link href="view/build/css/custom.min.css" rel="stylesheet">
+				
+			
+			<!-- Datatables -->
+		    <link href="view/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+		    
+		    
+		    
+		    
+		    
+		
+		
+		
+		
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		   
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -415,16 +440,26 @@
         </style>
         
         
-               
-    </head>
-    <body style="background-color: #F6FADE">
- 
- 
-       <?php include("view/modulos/head.php"); ?>
-     
        
-       <?php include("view/modulos/menu.php"); ?>
-   <?php
+    
+        
+			        
+    </head>
+    
+    
+    <body class="nav-md"  >
+    
+    
+     <?php
+        
+        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+        $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+        $fecha=$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
+        ?>
+    
+    <div class="container body">
+    
+     <?php
    
 		   $sel_categorias = 0;
 		   $sel_subcategorias = 0;
@@ -458,33 +493,60 @@
 		   }
 		   
 		?>
-		
-    <div class="container">
-      <div class="row" style="background-color: #FAFAFA;">
-      
-      <form id="formularioPrincipal" action="<?php echo $helper->url("Documentos","index"); ?>" method="post" class="form-horizontal">
-        
-     
-      <div class="panel panel-default">
+      <div class="main_container">
+        <div class="col-md-3 left_col  menu_fixed">
+          <div class="left_col scroll-view">
+            <?php include("view/modulos/logo.php"); ?>
 
-		  <div class="panel-heading"> <strong style="color:#ec971f;"> BÚSQUEDA DE DOCUMENTOS </strong>  </div>
-		  <div class="panel-body">
-		    <?php if ($resultEdit !="" ) { foreach($resultEdit as $resEdit) {?>
-		  	  <p   class="bg-danger" style="text-align: center;" ><strong>ESTAMOS EDITANDO </strong> Los cambios realizados serán guardados en el registro : <strong>   <?php echo $resEdit->id_documentos_legal ?>  </strong> </p>
-		  	  <input  type="hidden" id="id_documentos_legal" name="id_documentos_legal" value= "<?php echo $resEdit->id_documentos_legal ?>" > 
-  	        <?php } }?>
-  	      
-  	      </div>
+            <div class="clearfix"></div>
 
-     <div class="table-responsive">
-     
+            <!-- menu profile quick info -->
+            <?php include("view/modulos/menu_profile.php"); ?>
+            <!-- /menu profile quick info -->
+
+            <br />
+			<?php include("view/modulos/menu.php"); ?>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+		<?php include("view/modulos/head.php"); ?>	
+        <!-- /top navigation -->
+
+        <!-- page content -->
+		<div class="right_col" role="main">        
+            <?php
+       $sel_menu = "";
+       
     
-       	<table class="table">     	
+       if($_SERVER['REQUEST_METHOD']=='POST' )
+       {
+       	 
+       	 
+       	$sel_menu=$_POST['criterio'];
+       	
+       	 
+       }
+      
+	 	?>
+    <div class="container">
+  <section class="content-header">
+         <small><?php echo $fecha; ?></small>
+         <ol class=" pull-right breadcrumb">
+         <li><a href="<?php echo $helper->url("Usuarios","Bienvenida"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+         <li class="active">Busqueda</li>
+         </ol>
+         </section>
+  
+		
+  
+         	<table class="table">     	
             	
             <tr>
-	    		<th class="col-sm-2">Nombre Categoría</th>
-	    		<th class="col-sm-2">Nombre SubCategoría</th>
-	    		<th class="col-sm-2">Año</th>
+	    		<th class="col-sm-2">Nombre Categoria</th>
+	    		<th class="col-sm-2">Nombre SubCategoria</th>
+	    		<th class="col-sm-2">Periodo</th>
 	    		<th class="col-sm-2">Ruc Cliente/Proveedor</th>
 	    		<th class="col-sm-2">Nombre Cliente/Proveedor</th>
 	    	
@@ -583,7 +645,7 @@
 		
 			
         </table>
-      
+          
       	<table class="table">
       
       
@@ -676,15 +738,10 @@
       
       
       	</table>
-      
-      	</div>
-        </div>  
-      
-
-     
-     <!-- paginacion ajax -->
-        
-        <div style="height: 200px; display: block;">
+      	
+      	
+      	
+      	   <div style="height: 20px; display: block;">
 		
 		 <h4 style="color:#ec971f;"></h4>
 			  <div >					
@@ -694,117 +751,115 @@
 		       <br>
 				  
 		 </div>
-        
-      <!--termina paginacion ajax -->
+      </div>
+      
+      
+    </div>
+    
+       
      
 
-      <?php /*?>
-       <section class="col-sm-12" style="height:400px;overflow-y:scroll;">
+</div>
+
+</div>
+
+
+
+     <!-- Bootstrap -->
+    <script src="view/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     
     
-	    <table>
-		    <tr> 
-		    	<th> 
-		    	</th>
-		    </tr>
-	    </table>
-	    
-	  
-	    <table class="table">
-	         <tr>
-	    		<th>Id</th>
-	    		<th>Fecha del Documento</th>
-	    		<th>Categoria</th>
-	    		<th>Subcategoria</th>
-	    		<th>Tipo Documentos</th>
-	    		<th>Cliente/Proveedor</th>
-	    		<th>Carton Documentos</th>
-	    		<th>Numero Credito</th>
-	    		<th>Fecha de Subida</th>
-	    		<th></th>
-	    		<th></th>
-	    		
-	  		</tr>
-            <?php// echo $resul  ?>
-			<?php  $paginas =   0;  ?>
-		    <?php  $registros = 0; ?>
-	  		<?php if ($resultSet !="") { foreach($resultSet as $res) {?>
-	        		<tr>
-	                   <td> <?php echo $res->id_documentos_legal; ?>  </td>
-	                   <td> <?php echo $res->fecha_documentos_legal; ?>  </td>
-		               <td> <?php echo $res->nombre_categorias; ?>     </td> 
-		               <td> <?php echo $res->nombre_subcategorias; ?>  </td>
-		               <td> <?php echo $res->nombre_tipo_documentos; ?>     </td>
-		               <td> <?php echo $res->nombre_cliente_proveedor; ?>     </td>
-		               <td> <?php echo $res->numero_carton_documentos; ?>     </td>
-		    	       <td> <?php echo $res->numero_credito_documentos_legal; ?>     </td>
-		    	       
-		    	       <td> <?php echo $res->creado; ?>     </td>
-		            		 <?php  $paginas = $paginas + $res->paginas_documentos_legal;  ?>
-		                     <?php  $registros = $registros + 1 ; ?>
-		    
-		                 <td>
-			           		<div class="right">
-			            
-			                  <?php  if ($_SESSION["tipo_usuario"]=="usuario_local") {  ?>
-			            		 	  <a href=" <?php echo IP_INT . $res->id_documentos_legal; ?>  " class="btn btn-warning" target="blank">Ver</a>
-			            		 <?php } else {?>
-			            		 	  <a href="<?php echo IP_EXT . $res->id_documentos_legal; ?>  " class="btn btn-warning" target="blank">Ver</a> 
-			            		 <?php }?>
-			                           
-			                </div>
-			            
-			             </td>
-			             <td>
-			           		<div class="right">
-			                    <a href="<?php echo $helper->url("Documentos","index"); ?>&id_documentos_legal=<?php echo $res->id_documentos_legal; ?>" class="btn btn-info">Editar</a>
-			            
-			                </div>
-			            
-			             </td>
-			             
-		    		</tr>
-		  		
-		           	  
-		        <?php } ?>
-		</table>      		
-		    		
-		<table class="table">
-				<th class="text-center">
-				    	<nav>
-						  <ul id="pagina" name="pagina" class="pagination">
-						    <?php if ($paginasTotales > 0) {?>
-						    <?php for ($i = 1; $i< $paginasTotales+1; $i++)  { ?>
-						    		<input type="submit" value="<?php echo $i; ?>" id="pagina"  <?php if ($i == $pagina_actual ) { echo 'style="color: #1454a3 " '; }  ?>     name="pagina" class="btn btn-info"/>
-						    	
-						    <?php    } }?>
-						    
-						  </ul>
-						</nav>	   	   
+    
+    <!-- NProgress -->
+    <script src="view/vendors/nprogress/nprogress.js"></script>
+   
+   
+    <!-- Datatables -->
+    <script src="view/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    
+    
+    <script src="view/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="view/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    
+    
+    
+    <!-- Custom Theme Scripts -->
+    <script src="view/build/js/custom.min.js"></script>
+	<script src="view/js/jquery.inputmask.bundle.js"></script>
+	<!-- codigo de las funciones -->
+
+
+
+
+        <script type="text/javascript">
+	$(document).ready(function(){
+		
+		$("#btnBuscar").click(function(){
+
 			
-				</th>
-				<tr class="bg-primary">
-						<p class="text-center"> <strong> Registros Cargados: <?php echo  $registros?> Hojas Cargadas: <?php echo $paginas?> Registros Totales: <?php echo  $registrosTotales?> Hojas Totales: <?php echo $hojasTotales?> </strong>  </p>
-	     		  	
-				</tr>			
-		</table>
+			load_DocumentosClienteProv(1);
+			});
+	});
+
+	
+	function load_DocumentosClienteProv(pagina){
+
+
+	
+		//iniciar variables
+		 var doc_categorias=$("#categorias").val();
+		 var doc_subcategorias=$("#subcategorias").val();
+		 var doc_ruc_cli=$("#ruc_cliente_proveedor").val();
+		 var doc_nombre_cli=$("#nombre_cliente_proveedor").val();
+		 var doc_fecha_doc_desde=$("#fecha_documento_desde").val();
+		 var doc_fecha_doc_hasta=$("#fecha_documento_hasta").val();
+		 var doc_fecha_subida_desde=$("#fecha_subida_desde").val();
+		 var doc_fecha_subida_hasta=$("#fecha_subida_hasta").val();
+		 var doc_year=$("#year").val();
+
+		 
 		 	
- 				<?php  }   else { ?>
-		        <?php }  ?>
-      </section>       
-    <?php */?>
-      
-       </form>
-     <br>
-     <br>
-       </div>
-       </div
-	   <br>
-	    <br>
-		 <br>
-		  <br>
-        <footer class="col-lg-12">
-           <?php include("view/modulos/footer.php"); ?>
-        </footer>
-       </body>  
-    </html>
+		  var con_datos={
+				  categorias:doc_categorias,
+				  subcategorias:doc_subcategorias,
+				  ruc_cliente_proveedor:doc_ruc_cli,
+				  nombre_cliente_proveedor:doc_nombre_cli,
+				  fecha_documento_desde:doc_fecha_doc_desde,
+				  fecha_documento_hasta:doc_fecha_doc_hasta,
+				  fecha_subida_desde:doc_fecha_subida_desde,
+				  fecha_subida_hasta:doc_fecha_subida_hasta,
+				  year:doc_year,
+				  action:'ajax',
+				  page:pagina
+				  };
+
+
+		$("#DocumentosClienteProv").fadeIn('slow');
+		$.ajax({
+			url:"<?php echo $helper->url("DocumentosClienteProveedor","buscar");?>",
+            type : "POST",
+            async: true,			
+			data: con_datos,
+			 beforeSend: function(objeto){
+			$("#DocumentosClienteProv").html('<img src="view/images/ajax-loader.gif"> Cargando...');
+			},
+			success:function(data){
+				$(".DocumentosClienteProv").html(data).fadeIn('slow');
+				$("#DocumentosClienteProv").html("");
+			}
+		})
+	}
+	
+	</script>
+    
+	
+  
+ 
+
+	
+  </body>
+</html>   
+
+
+
+

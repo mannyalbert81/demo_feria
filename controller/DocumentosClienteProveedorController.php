@@ -14,9 +14,9 @@ class DocumentosClienteProveedorController extends ControladorBase{
 		
 		$documentos_legal = new DocumentosLegalModel();
 		
-		if (isset(  $_SESSION['usuario_usuario']) )
+		if (isset(  $_SESSION['id_usuarios']) )
 		{
-			$nombre_controladores = "Documentos";
+			$nombre_controladores = "Usuarios";
 			$id_rol= $_SESSION['id_rol'];
 			$resultPer = $documentos_legal->getPermisosVer("  controladores.nombre_controladores = '$nombre_controladores' AND permisos_rol.id_rol = '$id_rol' " );
 				
@@ -328,15 +328,15 @@ class DocumentosClienteProveedorController extends ControladorBase{
 		
 	public function buscar()
 	{
-		require_once 'config/global.php';
-	
+		//require_once 'config/global.php';
+		
 		session_start();
 	
 		$documentos_legal = new DocumentosLegalModel();
 	
-		if (isset(  $_SESSION['usuario_usuario']) )
+		if (isset(  $_SESSION['id_usuarios']) )
 		{
-			$nombre_controladores = "Documentos";
+			$nombre_controladores = "Usuarios";
 			$id_rol= $_SESSION['id_rol'];
 			$resultPer = $documentos_legal->getPermisosVer("   controladores.nombre_controladores = '$nombre_controladores' AND permisos_rol.id_rol = '$id_rol' " );
 	
@@ -346,6 +346,8 @@ class DocumentosClienteProveedorController extends ControladorBase{
 				
 				{
 					
+				   
+				    
 					///creo el array con los valores seleccionados
 		
 					
@@ -452,7 +454,7 @@ class DocumentosClienteProveedorController extends ControladorBase{
 								$html.='<span class="form-control"><strong>Registros: </strong>'.$cantidadResult.'</span>';
 								$html.='<input type="hidden" value="'.$cantidadResult.'" id="total_query" name="total_query"/>' ;
 								$html.='</div><br>';
-								$html.='<section style="height:700px;  overflow-y:auto;">';
+								$html.='<section style="height:300px;  overflow-y:auto;">';
 								$html.='<table class="table table-hover">';
 								$html.='<thead>';
 								$html.='<tr class="info">';
