@@ -1072,7 +1072,7 @@ public function index(){
     		
     		 
     		
-    		$where = "cedula_usuarios = '$_usuario' AND  pass_sistemas_usuarios ='$_clave'";
+    		$where = "usuario_usuario = '$_usuario' AND  clave_usuario ='$_clave'";
     	
     		$result=$usuarios->getBy($where);
 
@@ -1086,12 +1086,12 @@ public function index(){
     		{ 
     			foreach($result as $res) 
     			{
-    				$id_usuario  = $res->id_usuarios;
+    				$id_usuario  = $res->id_usuario;
     			    $id_rol           = $res->id_rol;
-	    			$nombre_usuario   = $res->nombre_usuarios;
-	    			$correo_usuario   = $res->correo_usuarios;
+	    			$nombre_usuario   = $res->nombre_usuario;
+	    			$correo_usuario   = $res->correo_usuario;
 	    			$id_estado        = $res->id_estado;
-	    			$cedula_usuarios        = $res->cedula_usuarios;
+	    			$usuario_usuario  = $res->usuario_usuario;
 	    			
     			}	
     			
@@ -1103,7 +1103,7 @@ public function index(){
     				 
     				 
     				///registro sesion
-    				$usuarios->registrarSesion($id_usuario, $id_rol, $nombre_usuario, $correo_usuario, $ip_usuario, $cedula_usuarios);
+    				$usuarios->registrarSesion($id_usuario, $id_rol, $nombre_usuario, $correo_usuario, $ip_usuario, $usuario_usuario);
     				 
     				//inserto en la tabla
     				$_id_usuario = $_SESSION['id_usuarios'];
@@ -1123,11 +1123,11 @@ public function index(){
     				 
     				$resultado=$sesiones->Insert();
     				 
-    				 
+    				
     				
     				if($_id_rol==1){
     					
-
+    				    
     					$this->view("BienvenidaAdmin",array(
     							"allusers"=>$_usuario
     					));
