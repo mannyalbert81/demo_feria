@@ -261,24 +261,26 @@
         		  }
 
 
-				function pone_cantidad_archivos_procesados(){
-					 $(document).ready( function (){
-	        		       $.ajax({
-	        		                 beforeSend: function(objeto){
-	        		                   $("#pone_cantidad_archivos").html('')
-	        		                 },
-	        		                 url: 'index.php?controller=ProcesosExportacion&action=carga_cantidad_archivos_procesados',
-	        		                 type: 'POST',
-	        		                 data: null,
-	        		                 success: function(x){
-	        		                   $("#pone_cantidad_archivos").html(x);
-	        		                 },
-	        		                error: function(jqXHR,estado,error){
-	        		                  $("#pone_cantidad_archivos").html("Ocurrio un error al cargar la informacion de usuarios..."+estado+"    "+error);
-	        		                }
-	        		              });
-	        		     })
-			}
+function pone_cantidad_archivos_procesados(){
+ $(document).ready( function (){
+       $.ajax({
+                 beforeSend: function(objeto){
+                   $("#pone_cantidad_archivos").html('')
+                 },
+                 url: 'index.php?controller=ProcesosExportacion&action=carga_cantidad_archivos_procesados',
+                 type: 'POST',
+                 data: null,
+                 dataType: 'json',
+                 success: function(x){
+                   $("#pone_cantidad_archivos").html(x);
+                 },
+                error: function(jqXHR,estado,error){
+                	$("#pone_cantidad_archivos").html('');
+                  //$("#pone_cantidad_archivos").html("Ocurrio un error al cargar la informacion de usuarios..."+estado+"    "+error);
+                }
+              });
+     })
+}
 
 				
 function carga_cantidad_imagenes_procesados(){
@@ -290,11 +292,12 @@ function carga_cantidad_imagenes_procesados(){
 	                 url: 'index.php?controller=ProcesosExportacion&action=carga_cantidad_imagenes_procesados',
 	                 type: 'POST',
 	                 data: null,
+	                 dataType: 'json',
 	                 success: function(x){
 	                   $("#pone_cantidad_imagenes").html(x);
 	                 },
 	                error: function(jqXHR,estado,error){
-	                  $("#pone_cantidad_imagenes").html("Ocurrio un error al cargar la informacion de usuarios..."+estado+"    "+error);
+	                  $("#pone_cantidad_imagenes").html('');
 	                }
 	              });
 	     })
