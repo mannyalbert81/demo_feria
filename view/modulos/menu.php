@@ -43,6 +43,8 @@ $controladores=(isset($_SESSION['controladores']))?$_SESSION['controladores']: a
                       <li style="<?php echo getcontrolador("Controladores",$controladores) ?>"><a href="index.php?controller=Controladores&action=index">Controladores</a></li>
                       <li style="<?php echo getcontrolador("Roles",$controladores) ?>"><a href="index.php?controller=Roles&action=index">Roles de Usuario</a></li>
                       <li style="<?php echo getcontrolador("PermisosRoles",$controladores) ?>"><a href="index.php?controller=PermisosRoles&action=index">Permisos Roles</a></li>
+                    <li style="<?php echo getcontrolador("Usuarios",$controladores) ?>"><a href="index.php?controller=DocumentosClienteProveedor&action=index">Consulta Documentos</a></li>
+                    
                     </ul>
                     
                   </li>
@@ -61,10 +63,12 @@ $controladores=(isset($_SESSION['controladores']))?$_SESSION['controladores']: a
                 
                   <li style="<?php echo getcontrolador("MenuProcesos",$controladores) ?>"  ><a    ><i class="fa fa-users"></i> Procesos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                       
                        <li style="<?php echo getcontrolador("Pedidos",$controladores) ?>"><a href="index.php?controller=Procesos&action=index">Datos</a></li>
                        <li style="<?php echo getcontrolador("Pedidos",$controladores) ?>"><a href="index.php?controller=Procesos&action=indexpdf">GenerarPdf</a></li>
                        <li style="<?php echo getcontrolador("ProcesosExportacion",$controladores) ?>"><a href="index.php?controller=ProcesosExportacion&action=index">Procesos Exportacion</a></li>
                        <li style="<?php echo getcontrolador("ProcesosErrores",$controladores) ?>"><a href="index.php?controller=ProcesosErrores&action=index">Errores</a></li>
+                               
                        </ul>
                   </li>
                 
