@@ -660,6 +660,10 @@ function selecionasubcategoria(e, v){
 		});
 	  
 	}
+
+	/*$('.clssubcategoria').on("click",function(){
+		alert('en metodo')
+		})*/
 	 
 
  </script>

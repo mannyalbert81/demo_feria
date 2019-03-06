@@ -501,7 +501,7 @@ class ProcesosController extends ControladorBase{
                             
             //para el code
             
-            $code= $_numero_credito.','.$_identificacion_cliente.','.$_tipo_credito.','.$_nombre_cliente.','.$_numero_carton.','.$_fecha_documento;
+            $code= $_categoria.','.$_subcategoria.','.$_numero_credito.','.$_identificacion_cliente.','.$_tipo_credito.','.$_nombre_cliente.','.$_numero_carton.','.$_fecha_documento;
                             
             //Parametros de Condiguracion
             
