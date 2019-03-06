@@ -18,7 +18,7 @@
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <!-- <img src="view/images/usuario.jpg" alt="">-->
-                    <img src="view/DevuelveImagenView.php?id_valor=<?php echo $_SESSION['id_usuarios']; ?>&id_nombre=id_usuarios&tabla=usuarios&campo=fotografia_usuarios" alt="" ><?php echo $_SESSION['nombre_usuarios'];?>
+                    <img src="view/DevuelveImagenView.php?id_valor=<?php echo $_SESSION['id_usuarios']; ?>&id_nombre=id_usuario&tabla=usuario&campo=fotografia_usuario" alt="" ><?php echo $_SESSION['nombre_usuarios'];?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">

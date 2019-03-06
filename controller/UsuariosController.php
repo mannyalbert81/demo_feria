@@ -361,13 +361,13 @@ class UsuariosController extends ControladorBase{
     	$id_rol=$_SESSION["id_rol"];
     	$i=0;
     	$usuarios = new UsuariosModel();
-    	$columnas = "usuarios.cedula_usuarios";
+    	$columnas = "usuarios.usuario_usuario";
     	
     	$tablas   = "public.usuarios";
     	
     	$where    = " 1=1";
     	
-    	$id       = "usuarios.id_usuarios";
+    	$id       = "usuarios.id_usuario";
     
     
     
@@ -1508,8 +1508,8 @@ public function index(){
 	    $usuarios = new UsuariosModel();
 	    $columnas = "sesiones.id_sesiones";
 	    $tablas   = "public.sesiones, public.usuarios";
-	    $where    = "sesiones.id_usuarios = usuarios.id_usuarios";
-	    $id       = "usuarios.nombre_usuarios";
+	    $where    = "sesiones.id_usuario = usuarios.id_usuario";
+	    $id       = "usuarios.nombre_usuario";
 	    $resultSet = $usuarios->getCondiciones($columnas ,$tablas ,$where, $id);
 	
 		$i=count($resultSet);
