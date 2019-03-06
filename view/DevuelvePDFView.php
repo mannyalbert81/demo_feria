@@ -29,9 +29,11 @@ else
 	
 		if ($res)
 		{
-			$raw = pg_fetch_result($res, $campo );
+			ECHO $raw = pg_fetch_result($res, $campo );
 			
-			header('Content-type: application/pdf');				
+			DIE();
+			
+			//header('Content-type: application/pdf');				
 			echo pg_unescape_bytea($raw);
 			
 			/*$archivo=$raw;
