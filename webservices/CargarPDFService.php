@@ -88,7 +88,7 @@ $db = new DB_Functions();
                         
                         $html.='<tr>';
                        // $html.='<td style="font-size: 18px;"><span class="pull-right"><a href="" onclick="window.plugins.childBrowser.showWebPage(encodeURI("http://docs.google.com/viewer?url=' + pdfLink + '"))" class="btn btn-warning" style="font-size:65%;"><i class="glyphicon glyphicon-eye-open"></i></a></span></td>';
-                        $html.='<td style="font-size: 18px;"><span class="pull-right"><a href="DevuelvePDF.html?id_documentos_legal='.$res->id_documentos_legal.'" class="btn btn-info" style="font-size:45%;"><i class="glyphicon glyphicon-print"></i></a></span></td>';
+                        $html.='<td style="font-size: 18px;"><span class="pull-right"><a href="http://192.168.1.121:4000/demo_feria/view/DevuelvePDFView.php?id_documentos_legal='.$res->id_documentos_legal.'" target="_blank" class="btn btn-info" style="font-size:45%;"><i class="glyphicon glyphicon-print"></i></a></span></td>';
                         $html.='<td style="font-size: 11px;">'.$res->nombre_cliente_proveedor.'</td>';
                         $html.='<td style="font-size: 11px;">'.$res->numero_carton_documentos.'</td>';
                         $html.='<td style="font-size: 11px;">'.$res->numero_credito_documentos_legal.'</td>';
@@ -147,9 +147,9 @@ $db = new DB_Functions();
             $archivo_archivos_pdf=$resultClientes[0]->archivo_archivos_pdf;
             
             $archivo_archivos_pdf1=base64_encode(pg_unescape_bytea($archivo_archivos_pdf));
-            $imgficha='data:application/pdf;base64,'.$archivo_archivos_pdf1;
+            //$imgficha='data:application/pdf;base64,'.$archivo_archivos_pdf1;
             
-            
+            $imgficha=$archivo_archivos_pdf1;
             
             if($action == 'ajax')
             {    
