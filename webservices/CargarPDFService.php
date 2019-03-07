@@ -146,13 +146,14 @@ $db = new DB_Functions();
             $resultClientes= $db->getBy("archivos_pdf", "id_documentos_legal='$id'");
             $archivo_archivos_pdf=$resultClientes[0]->archivo_archivos_pdf;
             
-            $archivo_archivos_pdf1=pg_unescape_bytea($archivo_archivos_pdf);
+            $archivo_archivos_pdf1=base64_encode(pg_unescape_bytea($archivo_archivos_pdf));
+            $imgficha='data:application/pdf;base64,'.$archivo_archivos_pdf1;
             
             
             
             if($action == 'ajax')
             {    
-                echo $_GET['jsoncallback'] . $archivo_archivos_pdf1;
+                echo $_GET['jsoncallback'] . $imgficha;
                 
             }
             
